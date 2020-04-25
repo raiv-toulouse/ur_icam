@@ -13,7 +13,7 @@ class Camera:
     self.image_sub = rospy.Subscriber('/ur5/usbcam/image_raw',
                                       Image, self.display_image)
     s = rospy.Service('record_image', Empty, self.record_image)
-    rospy.loginfo("Servide record_image *******************************")
+    rospy.loginfo("Service record_image *******************************")
 
 
   def record_image(self,msg):

@@ -31,6 +31,7 @@ class RobotUR(object):
   def get_current_pose(self):
       return self.move_group.get_current_pose()
 
+
   ## Planning to a Joint Goal
   def go_to_joint_state(self,joints_goal):
     # The go command can be called with joint values, poses, or without any
@@ -121,25 +122,23 @@ if __name__ == '__main__':
         print("L'objectif est atteint")
     else:
         print("On n'est pas sur l'objectif")
-    objectifAtteint = myRobot.go_to_joint_state([pi/2, -pi/4, 0, -pi/2, 0, pi/3])
-    objectifAtteint = myRobot.go_to_joint_state([0, -pi/3, 0, -pi/2, 0, pi/3])
-    # On teste le positionnement par rapprot à des coordonnées cartésiennes
+    # On teste le positionnement par rapport à des coordonnées cartésiennes
+    print("Test de go_to_pose_goal")
     pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w = 1.0
     pose_goal.position.x = 0.4
     pose_goal.position.y = 0.1
     pose_goal.position.z = 0.4
     myRobot.go_to_pose_goal(pose_goal)
-    pose_goal.position.x = 0.2
-    myRobot.go_to_pose_goal(pose_goal)
     # On teste le déplacement en coord cartésiennes entre différents waypoints
+    print("Test de exec_cartesian_path")
     waypoints = []
     wpose = myRobot.get_current_pose().pose
-    wpose.position.z -= 0.1  # First move up (z)
-    wpose.position.y += 0.2  # and sideways (y)
+    wpose.position.z += 0.1  # First move up (z)
+    wpose.position.y += 0.1  # and sideways (y)
     waypoints.append(copy.deepcopy(wpose))
     wpose.position.x += 0.1  # Second move forward/backwards in (x)
     waypoints.append(copy.deepcopy(wpose))
     wpose.position.y -= 0.1  # Third move sideways (y)
     waypoints.append(copy.deepcopy(wpose))
     myRobot.exec_cartesian_path(waypoints)
+    print("Fin")

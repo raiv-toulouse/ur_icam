@@ -10,4 +10,9 @@ from ur_icam.vacuum_gripper_set import VacuumGripperSet
 if __name__ == '__main__':
     rospy.init_node("gripper", anonymous=False)
     gripperSet = VacuumGripperSet(9)  # Une matrice 3x3 grippers
-    rospy.spin()
+    for i in range(2):
+        gripperSet.on()
+        rospy.sleep(3)
+        gripperSet.off()
+        rospy.sleep(3)
+    print("Fin")

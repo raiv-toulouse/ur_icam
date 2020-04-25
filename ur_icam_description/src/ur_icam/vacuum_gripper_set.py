@@ -14,16 +14,14 @@ class VacuumGripperSet:
 
     def grasp(self,msg):
         if msg.data:
-            for g in self.lesGrippers:
-                g.gripper_on()
+            self.on()
         else:
-            for g in self.lesGrippers:
-                g.gripper_off()
-       
-#
-# Permet de positionner le robot à un endroit précis à l'aide de coord cartésiennes
-#
-if __name__ == '__main__':
-    rospy.init_node("gripper", anonymous=False)
-    gripperSet = VacuumGripperSet(9)  # Une matrice 3x3 grippers
-    rospy.spin()
+            self.off()
+
+    def on(self):
+        for g in self.lesGrippers:
+            g.gripper_on()
+
+    def off(self):
+        for g in self.lesGrippers:
+            g.gripper_off()
