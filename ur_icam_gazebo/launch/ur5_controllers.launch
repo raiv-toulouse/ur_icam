@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <!-- Launch file parameters -->
-  <arg name="debug"     default="false" />
+  <arg name="debug"     default="true" />
 
   <arg if=      "$(arg debug)"  name="DEBUG" value="screen"/>
   <arg unless = "$(arg debug)"  name="DEBUG" value="log"/>

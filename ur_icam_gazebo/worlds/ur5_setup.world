@@ -28,13 +28,13 @@
       <pose>0 0 0 0 0 0</pose>
     </include>
 
-    <!-- The robot base -->
+    <!-- The robot base
     <model name="ur5_base">
       <include>
         <uri>model://ur5_base</uri>
         <pose>0 0 0 0 0 0</pose>
       </include>
     </model>
-
+-->
   </world>
 </sdf>

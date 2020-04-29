@@ -31,6 +31,6 @@
               -J elbow_joint 1.0"
         output="screen" />
 
-  <include file="$(find ur_icam)/ur_icam_gazebo/launch/ur5_controllers.launch" />
+ <include file="$(find ur_icam)/ur_icam_gazebo/launch/ur5_controllers.launch" /> 
 
 </launch>
