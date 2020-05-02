@@ -111,6 +111,7 @@ class RobotUR(object):
 #
 if __name__ == '__main__':
     myRobot = RobotUR()
+    rospy.init_node('robotUR')
     # Getting Basic Information
     # ^^^^^^^^^^^^^^^^^^^^^^^^^
     # We can get the name of the reference frame for this robot:
@@ -139,7 +140,7 @@ if __name__ == '__main__':
         print("On n'est pas sur l'objectif")
     # On teste le positionnement par rapport à des coordonnées cartésiennes
     print("Test de go_to_pose_goal")
-    pose_goal = geometry_msgs.msg.Pose()
+    pose_goal = Pose()
     pose_goal.position.x = 0.4
     pose_goal.position.y = 0.1
     pose_goal.position.z = 0.4

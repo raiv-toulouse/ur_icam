@@ -1,7 +1,6 @@
 # coding: utf-8
 import actionlib
 import control_msgs.msg
-import rospy
 
 ACTION_SERVER = '/gripper_controller/gripper_cmd'
 

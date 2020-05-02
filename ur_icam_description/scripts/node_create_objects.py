@@ -3,7 +3,7 @@
 import rospy
 from geometry_msgs.msg import *
 import random,argparse,sys
-from gazebo_msgs.srv import DeleteModel, SpawnModel
+from gazebo_msgs.srv import SpawnModel
 
 #
 #  Création de plusieurs objets à des positions aléatoires

@@ -2,7 +2,7 @@
 # coding: utf-8
 
 import rospy
-from ur_icam.vacuum_gripper_set import VacuumGripperSet
+from ur_icam_description.vacuum_gripper_set import VacuumGripperSet
 
 #
 # Un ensemble de 3x3 Grippers
