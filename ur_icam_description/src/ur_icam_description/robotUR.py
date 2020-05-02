@@ -16,7 +16,6 @@ class RobotUR(object):
         super(RobotUR, self).__init__()
         # First initialize `moveit_commander`_ and a `rospy`_ node:
         moveit_commander.roscpp_initialize(sys.argv)
-        rospy.init_node('robot_UR', anonymous=True)
         # Instantiate a `RobotCommander`_ object. Provides information such as the robot's
         # kinematic model and the robot's current joint states
         self.robot = moveit_commander.RobotCommander()

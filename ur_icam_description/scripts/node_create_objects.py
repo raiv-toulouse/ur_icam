@@ -33,5 +33,5 @@ if __name__ == '__main__':
     parser.add_argument("--dy", type=float, default=1,help="demi-largeur en Y")
     parser.add_argument("file", help="fichier URDF décrivant l'objet")
     args = parser.parse_args(rospy.myargv()[1:])
-    #create_objects("/home/philippe/Devel/catkin_ws/src/ur_icam/urdf/red_box.urdf",args.nb_objects,args.x,args.y,args.dx,args.dy)
+    #create_objects("/home/philippe/Devel/catkin_ws/src/ur_icam_description/urdf/red_box.urdf",args.nb_objects,args.x,args.y,args.dx,args.dy)
     create_objects(args.file,args.nb_objects,args.x,args.y,args.dx,args.dy)

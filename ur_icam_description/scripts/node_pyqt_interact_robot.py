@@ -2,17 +2,19 @@
 # coding: utf-8
 from PyQt5 import QtGui, QtCore
 from math import pi
-
 from PyQt5.QtWidgets import *
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
-from ur_icam.reglage import Reglage
-from ur_icam.robotUR import RobotUR
+from ur_icam_description.reglage import Reglage
+from ur_icam_description.robotUR import RobotUR
+import rospy
 
 
 class InteractRobotPyQt(QWidget):
     def __init__(self, initialPose):
         super(InteractRobotPyQt, self).__init__()
         # loadUi('reglage.ui', self)
+        # Start the ROS node
+        rospy.init_node('interact_robot')
         self.robot = RobotUR()
         objectifAtteint = self.robot.go_to_joint_state(initialPose)  # On met le robot en position initiale
         # objectifAtteint = self.robot.go_to_joint_state([0, 0, 0, 0, 0, 0])
@@ -29,7 +31,7 @@ class InteractRobotPyQt(QWidget):
         vLayout.addWidget(self.reglPoseX)
         self.reglPoseY = Reglage(-1, 1, "y : ", self.pose_goal.position.y)
         vLayout.addWidget(self.reglPoseY)
-        self.reglPoseZ = Reglage(0, 1, "z : ", self.pose_goal.position.z)
+        self.reglPoseZ = Reglage(-0.5, 1, "z : ", self.pose_goal.position.z)
         vLayout.addWidget(self.reglPoseZ)
         vLayout.addWidget(QLabel("Orientation"))
         q = self.pose_goal.orientation
