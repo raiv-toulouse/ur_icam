@@ -4,7 +4,7 @@ project(ur_icam_gazebo)
 
 find_package(catkin REQUIRED COMPONENTS gazebo_msgs roscpp geometry_msgs std_srvs std_msgs message_generation rospy)
 
-catkin_python_setup()
+#catkin_python_setup()
 
 #generate_messages(DEPENDENCIES std_msgs)
 

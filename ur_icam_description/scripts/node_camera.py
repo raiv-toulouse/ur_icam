@@ -4,5 +4,5 @@ from ur_icam_description.camera import Camera
 import rospy
 
 rospy.init_node('myCamera')
-myCamera = Camera('/home/philippe')
+myCamera = Camera()
 rospy.spin()
