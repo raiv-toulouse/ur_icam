@@ -30,9 +30,9 @@ roslaunch ur_icam_description ur_camera_vacuum_gripper.launch
 ```
 dans un autre shell
 ```
-rosrun ur_icam_description node_vacuum_gripper_set.py
+rosrun ur_icam_description node_test_vacuum_gripper_set.py
 ou bien
-rosservice call /record_image "data: '/home/philippe'"
+rosservice call /grasp "data: true"
 ```
 ### Robot + pince Robotiq85
 Ce programme empile 2 cubes sur un troisième.
@@ -66,6 +66,9 @@ Ne pas oublier de paramétrer le répertoire de sauvegarde des images dans le co
 Appelle le service de prise d'une photo.
 
 Le node **node_camera.py** doit être lancé avant.
+```commandline
+rosservice call /record_image "data: '/home/philippe'"
+```
 
 ### node_create_objects.py 
 Création à des positions aléatoires d'un ensemble d'objets dans une simulation Gazebo.

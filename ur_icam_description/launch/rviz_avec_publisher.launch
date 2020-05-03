@@ -1,8 +1,0 @@
-<launch>
-  <arg name="model" />
-  <param name="robot_description" textfile="$(find ur_icam)/urdf/mon_ur5.urdf" />
-  <param name="use_gui" value="true"/>
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
-  <!--<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />-->
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ur_icam)/ur5_joints.rviz" required="true" />
-</launch>

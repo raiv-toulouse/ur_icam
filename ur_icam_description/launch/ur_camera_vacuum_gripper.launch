@@ -46,4 +46,6 @@
   <!-- On positionne le robot juste au dessus de la pièce-->
   <node name="node_move_cartesian" pkg="ur_icam_description" type="node_move_cartesian.py" output="screen"/>
 
+  <!-- Création d'un VacuumGripperSet permettant d'utiliser le service /grasp pour aspirer la pièce -->
+  <node name="node_vacuum_gripper_set" pkg="ur_icam_description" type="node_vacuum_gripper_set.py" output="screen"/>
 </launch>

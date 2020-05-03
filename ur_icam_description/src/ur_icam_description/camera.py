@@ -4,7 +4,6 @@ import rospy
 from sensor_msgs.msg import Image
 import cv2, cv_bridge
 from ur_icam_description.srv import InitDirectory,InitDirectoryResponse
-from std_srvs.srv import EmptyResponse
 
 class Camera:
   def __init__(self):

@@ -1,7 +1,0 @@
-<launch>
-  <arg name="model" />
-  <param name="robot_description" textfile="$(find ur_icam_description)/urdf/mon_ur5.urdf" />
-  <param name="use_gui" value="true"/>
-  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ur_icam_description)/ur5_joints.rviz" required="true" /> -->
-  <node name="rviz" pkg="rviz" type="rviz" />
-</launch>
