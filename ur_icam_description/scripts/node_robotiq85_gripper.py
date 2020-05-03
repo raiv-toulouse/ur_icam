@@ -12,7 +12,7 @@ if __name__ == '__main__':
         # Get the angle from the command line
         parser = argparse.ArgumentParser()
         parser.add_argument("--value", type=float, default="0.2",
-                            help="Value betwewen 0.0 (closed) and 0.8 (open)")
+                            help="Value betwewen 0.0 (open) and 0.8 (closed)")
         args = parser.parse_args()
         gripper_value = args.value
         # Start the ROS node
