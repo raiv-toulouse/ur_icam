@@ -9,14 +9,14 @@ import rospy
 from ur_icam_description.gripper import Robotiq85Gripper
 from ur_icam_description.robotUR import RobotUR
 
-def pick_and_place(x,y,z,h,initialPose):
+def pick_and_place(x,y,z,h,initialJointsState):
     '''
     Attrape un cube et le place sur la pile au dessus du cube du milieu (se trouvant en [x,0,z])
     :param x: abscisse du cube
     :param y: ordonnée du cube
     :param z: élévation du cube (les coord sont par rapport au repère lié à la base du robot)
     :param h: hauteur du cube
-    :param initialPose: position initiale de repos du robot
+    :param initialJointsState: position initiale de repos du robot
     :return:
     '''
     pose_goal = myRobot.get_current_pose().pose  # On récupère ses coord articulaires et cartésiennes
@@ -44,7 +44,7 @@ def pick_and_place(x,y,z,h,initialPose):
     myGripper.open()
     rospy.sleep(1)  # Pour laisser le temps au contact de se défaire
     # Go up to initial pose
-    myRobot.go_to_pose_goal(initialPose)
+    myRobot.go_to_joint_state(initialJointsState)
 
 if __name__ == '__main__':
     try:
@@ -52,9 +52,9 @@ if __name__ == '__main__':
         rospy.init_node('stack_cubes')
         myGripper = Robotiq85Gripper()
         myRobot = RobotUR()
-        initialPose = [0, -pi / 2, pi / 2, -pi / 2, -pi / 2, 0]
-        myRobot.go_to_joint_state(initialPose)
-        pick_and_place(0.4, -0.2, -0.1, 0.05, initialPose)  # Left cube
-        pick_and_place(0.4, 0.2, -0.1, 0.05 + 0.05, initialPose)  # Right cube, h is 0.05 more
+        initialJointsState = [0, -pi / 2, pi / 2, -pi / 2, -pi / 2, 0]
+        myRobot.go_to_joint_state(initialJointsState)
+        pick_and_place(0.4, -0.2, -0.1, 0.05, initialJointsState)  # Left cube
+        pick_and_place(0.4, 0.2, -0.1, 0.05 + 0.05, initialJointsState)  # Right cube, h is 0.05 more
     except rospy.ROSInterruptException:
         print ("Program interrupted before completion")

@@ -53,9 +53,7 @@ class RobotUR(object):
         current_joints = self.move_group.get_current_joint_values()
         return self.all_close(joints_goal, current_joints, 0.01)
 
-        # Planning to a cartesian goal
-
-
+    # Planning to a cartesian goal
     def go_to_pose_goal(self, pose_goal):
         # We can plan a motion for this group to a desired pose for the end-effector:
         self.move_group.set_pose_target(pose_goal)
@@ -69,9 +67,7 @@ class RobotUR(object):
         current_pose = self.move_group.get_current_pose().pose
         return self.all_close(pose_goal, current_pose, 0.01)
 
-        # Execute a cartesian path throw a list of waypoints
-
-
+    # Execute a cartesian path throw a list of waypoints
     def exec_cartesian_path(self, waypoints):
         # We want the Cartesian path to be interpolated at a resolution of 1 cm
         # which is why we will specify 0.01 as the eef_step in Cartesian
@@ -94,16 +90,19 @@ class RobotUR(object):
         @param: tolerance  A float
         @returns: bool
         """
-        all_equal = True
-        if type(goal) is list:
-            for index in range(len(goal)):
-                if abs(actual[index] - goal[index]) > tolerance:
-                    return False
-        elif type(goal) is PoseStamped:
-            return self.all_close(goal.pose, actual.pose, tolerance)
-        elif type(goal) is Pose:
-            return self.all_close(pose_to_list(goal), pose_to_list(actual), tolerance)
-        return True
+        try:
+            all_equal = True
+            if type(goal) is list:
+                for index in range(len(goal)):
+                    if abs(actual[index] - goal[index]) > tolerance:
+                        return False
+            elif type(goal) is PoseStamped:
+                return self.all_close(goal.pose, actual.pose, tolerance)
+            elif type(goal) is Pose:
+                return self.all_close(pose_to_list(goal), pose_to_list(actual), tolerance)
+            return True
+        except TypeError:
+            rospy.logerr("Incompatible types between goal and actual in 'RobotUR.allClose'")
 
 
 #
