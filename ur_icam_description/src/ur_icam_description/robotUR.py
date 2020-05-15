@@ -25,6 +25,10 @@ class RobotUR(object):
         # This interface can be used to plan and execute motions:
         group_name = "manipulator"
         self.move_group = moveit_commander.MoveGroupCommander(group_name)
+        ## Instantiate a `PlanningSceneInterface`_ object.  This provides a remote interface
+        ## for getting, setting, and updating the robot's internal understanding of the
+        ## surrounding world:
+        self.scene = moveit_commander.PlanningSceneInterface()
 
     def get_current_pose(self):
         return self.move_group.get_current_pose()
@@ -82,6 +86,18 @@ class RobotUR(object):
         self.move_group.stop()
 
 
+    def add_obstacle_box(self,name,size,position):
+            # Create table obstacle
+            self.scene.remove_world_object(name)
+            pose = PoseStamped()
+            pose.header.frame_id = "world"
+            pose.pose.position.x = position[0]
+            pose.pose.position.y = position[1]
+            pose.pose.position.z = position[2]
+            self.scene.add_box(name, pose, size=size)
+            return self.wait_for_state_update(name, box_is_known=True)
+
+
     def all_close(self, goal, actual, tolerance):
         """
         Convenience method for testing if a list of values are within a tolerance of their counterparts in another list
@@ -104,6 +120,33 @@ class RobotUR(object):
         except TypeError:
             rospy.logerr("Incompatible types between goal and actual in 'RobotUR.allClose'")
 
+    def wait_for_state_update(self, box_name, box_is_known=False, box_is_attached=False, timeout=4):
+        ## Ensuring Collision Updates Are Received
+        ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        ## If the Python node dies before publishing a collision object update message, the message
+        ## could get lost and the box will not appear. To ensure that the updates are
+        ## made, we wait until we see the changes reflected in the
+        ## ``get_attached_objects()`` and ``get_known_object_names()`` lists.
+        ## For the purpose of this tutorial, we call this function after adding,
+        ## removing, attaching or detaching an object in the planning scene. We then wait
+        ## until the updates have been made or ``timeout`` seconds have passed
+        start = rospy.get_time()
+        seconds = rospy.get_time()
+        while (seconds - start < timeout) and not rospy.is_shutdown():
+          # Test if the box is in attached objects
+          attached_objects = self.scene.get_attached_objects([box_name])
+          is_attached = len(attached_objects.keys()) > 0
+          # Test if the box is in the scene.
+          # Note that attaching the box will remove it from known_objects
+          is_known = box_name in self.scene.get_known_object_names()
+          # Test if we are in the expected state
+          if (box_is_attached == is_attached) and (box_is_known == is_known):
+            return True
+          # Sleep so that we give other threads time on the processor
+          rospy.sleep(0.1)
+          seconds = rospy.get_time()
+        # If we exited the while loop without returning then we timed out
+        return False
 
 #
 #  Démo des différentes fonctions du robot
