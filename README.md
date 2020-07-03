@@ -1,7 +1,7 @@
 # Demo ur_icam
 
 ## But
-Ces exemples servent à montrer l'utilisation de différentes classes permettant de simuler sous Gazebo un robot Universal Robot, une webcam, des ventouses et une pince Robotiq85.
+Ces exemples servent à montrer l'utilisation de différentes classes permettant de simuler sous Gazebo ou dans un environnement réel, un robot Universal Robot, une webcam, des ventouses et une pince Robotiq85.
 
 Un document décrit plus précisément le contenu de ce package (voir [ici](https://docs.google.com/document/d/1sBbloDQ2kFa2piVtJMc2v_1zyN-QUbDZUSSiXVrd0uw/edit#))
 
@@ -13,7 +13,9 @@ Depuis votre workspace ROS (on suppose que c'est ~/catkin_ws):
 cd src
 git clone https://github.com/raiv-toulouse/universal_robot.git
 git clone https://github.com/raiv-toulouse/ur_icam.git
-git clone https://github.com/raiv-toulouse/pkg_gripper.git 
+git clone https://github.com/raiv-toulouse/pkg_gripper.git
+git clone https://github.com/raiv-toulouse/fmauch_universal_robot.git
+git clone https://github.com/raiv-toulouse/Universal_Robot_ROS_Driver.git
 cd ..
 catkin_make
 ```
@@ -39,6 +41,14 @@ Ce programme empile 2 cubes sur un troisième.
 ```commandline
 roslaunch ur_icam_gazebo ur5.launch
 roslaunch ur_icam_moveit_config ur5_moveit_planning_execution.launch sim:=true
+rosrun ur_icam_description node_stack_cubes.py
+```
+
+### Robot réel + pince Rg2
+Ce programme empile 2 cubes sur un troisième.
+```commandline
+roslaunch ur_robot_driver ur3_bringup.launch robot_ip:=10.31.56.102
+roslaunch ur3_moveit_config ur3_moveit_planning_execution.launch
 rosrun ur_icam_description node_stack_cubes.py
 ```
 
@@ -94,6 +104,12 @@ rosrun ur_icam_description node_robotiq85_gripper.py --value 0.4
 ```
 ### node_stack_cubes.py
 Empile 2 cubes sur un troisième. Utilisation des classes RobotUR et Robotiq85Gripper.
+
+### node_push_cubes.py
+Pousse 3 cubes, les uns après les autres.
+
+### node_test_on_real_robot.py
+Test des différentes fonctions du robot dans un environnement réel (les mêmes fonctions que celle de la classe robot). 
 
 ### node_vacuum_gripper_set
 Teste l'activation/désactivation d'un ensemble de ventouses à l'aide de la classe VacuumGripperSet

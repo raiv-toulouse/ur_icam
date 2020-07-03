@@ -12,7 +12,7 @@
 
     <gravity>0 0 -9.81</gravity>
 
-    <physics name="default_physics" default="0" type="ode">
+    <physics name="default_physics" type="ode">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1</real_time_factor>
       <real_time_update_rate>1000</real_time_update_rate>
@@ -60,7 +60,7 @@
 
     <!-- Cubes -->
     <model name="cube1">
-      <pose>0.4 -0.2 0.775 0 0 0</pose>
+      <pose>0.6 -0.2 0.775 0 0 0</pose>
       <link name="link">
         <pose>0 0 0.025 0 0 0</pose>
         <inertial>
@@ -92,6 +92,10 @@
               </ode>
             </contact>
             <friction>
+	      <ode>
+		<mu>0.2</mu>
+		<mu2>0.2</mu2>
+	      </ode>
               <torsional>
                 <coefficient>1.0</coefficient>
                 <use_patch_radius>0</use_patch_radius>
@@ -117,7 +121,7 @@
     </model>
 
     <model name="cube2">
-      <pose>0.4 0 0.775 0 0 0</pose>
+      <pose>0.6 0 0.775 0 0 0</pose>
       <link name="link">
         <pose>0 0 0.025 0 0 0</pose>
         <inertial>
@@ -149,6 +153,10 @@
               </ode>
             </contact>
             <friction>
+	      <ode>
+		<mu>0.2</mu>
+		<mu2>0.2</mu2>
+	      </ode>
               <torsional>
                 <coefficient>1.0</coefficient>
                 <use_patch_radius>0</use_patch_radius>
@@ -174,7 +182,7 @@
     </model>
 
     <model name="cube3">
-      <pose>0.4 0.2 0.775 0 0 0</pose>
+      <pose>0.6 0.2 0.775 0 0 0</pose>
       <link name="link">
         <pose>0 0 0.025 0 0 0</pose>
         <inertial>
@@ -206,6 +214,10 @@
               </ode>
             </contact>
             <friction>
+	      <ode>
+		<mu>0.2</mu>
+		<mu2>0.2</mu2>
+	      </ode>
               <torsional>
                 <coefficient>1.0</coefficient>
                 <use_patch_radius>0</use_patch_radius>

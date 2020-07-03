@@ -80,6 +80,11 @@ catkin_package(
 #   ${catkin_LIBRARIES}
 # )
 
+
+#add_executable(add_collision_object src/add_collision_object.cpp)
+#add_dependencies(add_collision_object ur_icam_generate_messages_cpp)
+#target_link_libraries(add_collision_object ${catkin_LIBRARIES})
+
 #############
 ## Install ##
 #############
