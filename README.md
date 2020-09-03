@@ -8,7 +8,7 @@ Un document décrit plus précisément le contenu de ce package (voir [ici](http
 ## Installation 
 Si ce n'est pas déjà fait, installez les controleurs ROS : 
 ```commandline
-sudo apt-get install ros-melodic-ros-control ros-melodic-ros-controllers
+sudo apt-get install ros-melodic-ros-control ros-melodic-ros-controllers ros-melodic-moveit*
 ```
 
 Depuis votre workspace ROS (on suppose que c'est ~/catkin_ws):
