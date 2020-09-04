@@ -1,7 +1,7 @@
+<?xml version="1.0"?>
 <!--  Load a webcam on Gazebo which provides a /ur5/usbcam/image_raw topic
  rosrun image_view image_view image:=/ur5/usbcam/image_raw
  -->
-<?xml version="1.0"?>
 <launch>
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">

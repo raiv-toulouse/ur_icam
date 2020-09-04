@@ -1,6 +1,6 @@
+<?xml version="1.0" ?>
 <!--  This world file is used by webcam_gazebo.launch to create a camera associated with the camera controller libgazebo_ros_camera.so.
  It simulates a webcam which sends an image on the /ur5/usbcam/image_raw topic -->
-<?xml version="1.0" ?>
 <sdf version="1.4">
  <world name="default">
  <include>
