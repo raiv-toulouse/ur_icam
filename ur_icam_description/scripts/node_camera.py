@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 from ur_icam_description.image_viewer_opencv import ImageViewerOpenCV
 import rospy
