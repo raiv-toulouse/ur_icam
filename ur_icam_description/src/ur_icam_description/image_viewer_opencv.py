@@ -5,7 +5,7 @@ from sensor_msgs.msg import Image
 import cv2, cv_bridge
 from ur_icam_description.srv import InitDirectory,InitDirectoryResponse
 
-class Camera:
+class ImageViewerOpenCV:
   def __init__(self):
     self.indImage = 0
     self.bridge = cv_bridge.CvBridge()

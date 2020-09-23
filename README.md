@@ -6,6 +6,10 @@ Ces exemples servent à montrer l'utilisation de différentes classes permettant
 Un document décrit plus précisément le contenu de ce package (voir [ici](https://docs.google.com/document/d/1sBbloDQ2kFa2piVtJMc2v_1zyN-QUbDZUSSiXVrd0uw/edit#))
 
 ## Installation 
+Si ce n'est pas déjà fait, installez les controleurs ROS : 
+```commandline
+sudo apt-get install ros-melodic-ros-control ros-melodic-ros-controllers ros-melodic-moveit*
+```
 
 Depuis votre workspace ROS (on suppose que c'est ~/catkin_ws):
 

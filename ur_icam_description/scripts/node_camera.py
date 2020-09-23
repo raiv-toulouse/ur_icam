@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
-from ur_icam_description.camera import Camera
+from ur_icam_description.image_viewer_opencv import ImageViewerOpenCV
 import rospy
 
 rospy.init_node('myCamera')
-myCamera = Camera()
+myViewer = ImageViewerOpenCV()
 rospy.spin()
