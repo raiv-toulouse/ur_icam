@@ -15,9 +15,14 @@ from moveit_commander.conversions import pose_to_list
 from std_srvs.srv import Trigger, TriggerRequest
 
 # Config
-tcp_host_ip = "10.31.56.102"
+tcp_robot_ip = "10.31.56.102"
 tcp_port = 30002
 
+# Use this class to drive a Universal Robot with ROS
+# First, run the communication between the robot and ROS :
+# roslaunch ur_robot_driver ur3_bringup.launch robot_ip:=10.31.56.102 kinematics_config:=${HOME}/Calibration/ur3_calibration.yaml
+# Then, MoveIt! must be launched : roslaunch ur3_moveit_config ur3_moveit_planning_execution.launch
+# Finally, run this node : rosrun ur_icam_description robotUR.py
 
 class RobotUR(object):
     def __init__(self):
@@ -39,23 +44,49 @@ class RobotUR(object):
         self.scene = moveit_commander.PlanningSceneInterface()
 
     def get_current_pose(self):
+        """
+
+        @return:
+        """
         return self.move_group.get_current_pose()
 
     def get_current_joint(self):
+        """
+
+        @return:
+        """
         return self.move_group.get_current_joint_values()
 
-    def deconnecter(self):
+    def disconnect(self):
+        """
+
+        @return:
+        """
         moveit_commander.roscpp_shutdown()
 
     def setPose(self, x, y, z, phi, theta, psi):
+        """
+
+        @param x:
+        @param y:
+        @param z:
+        @param phi:
+        @param theta:
+        @param psi:
+        @return:
+        """
         orient = Quaternion(quaternion_from_euler(phi, theta, psi))
         pose = Pose(Point(x, y, z), orient)
         self.move_group.set_pose_target(pose)
         self.move_group.go(True)
         self.move_group.stop()
 
-    # Planning to a Joint Goal
     def go_to_joint_state(self, joints_goal):
+        """
+        go to a position specified by angular joint coordinates
+        @param joints_goal:
+        @return:
+        """
         # The go command can be called with joint values, poses, or without any
         # parameters if you have already set the pose or joint target for the group
         self.move_group.go(joints_goal, wait=True)
@@ -65,8 +96,12 @@ class RobotUR(object):
         current_joints = self.move_group.get_current_joint_values()
         return self.all_close(joints_goal, current_joints, 0.01)
 
-    # Planning to a cartesian goal
     def go_to_pose_goal(self, pose_goal):
+        """
+        Planning to a cartesian goal
+        @param pose_goal:
+        @return:
+        """
         # We can plan a motion for this group to a desired pose for the end-effector:
         self.move_group.set_pose_target(pose_goal)
         # Now, we call the planner to compute the plan and execute it.
@@ -79,8 +114,12 @@ class RobotUR(object):
         current_pose = self.move_group.get_current_pose().pose
         return self.all_close(pose_goal, current_pose, 0.01)
 
-    # Execute a cartesian path throw a list of waypoints
     def exec_cartesian_path(self, waypoints):
+        """
+        Execute a cartesian path throw a list of waypoints
+        @param waypoints:
+        @return:
+        """
         # We want the Cartesian path to be interpolated at a resolution of 1 cm
         # which is why we will specify 0.01 as the eef_step in Cartesian
         # translation.  We will disable the jump threshold by setting it to 0.0,
@@ -93,38 +132,58 @@ class RobotUR(object):
         self.move_group.execute(plan, wait=True)
         self.move_group.stop()
 
-
     def add_obstacle_box(self,name,size,position):
-            # Create table obstacle
-            self.scene.remove_world_object(name)
-            pose = PoseStamped()
-            pose.header.frame_id = "world"
-            pose.pose.position.x = position[0]
-            pose.pose.position.y = position[1]
-            pose.pose.position.z = position[2]
-            self.scene.add_box(name, pose, size=size)
-            return self.wait_for_state_update(name, box_is_known=True)
+        """
+
+        @param name:
+        @param size:
+        @param position:
+        @return:
+        """
+        self.scene.remove_world_object(name)
+        pose = PoseStamped()
+        pose.header.frame_id = "world"
+        pose.pose.position.x = position[0]
+        pose.pose.position.y = position[1]
+        pose.pose.position.z = position[2]
+        self.scene.add_box(name, pose, size=size)
+        return self.wait_for_state_update(name, box_is_known=True)
 
     def add_obstacle_table(self,name,size,position):
-            # Create table obstacle
-            self.scene.remove_world_object(name)
-            pose = PoseStamped()
-            pose.header.frame_id = "world"
-            pose.pose.position.x = position[0]
-            pose.pose.position.y = position[1]
-            pose.pose.position.z = position[2]
-            r = rospkg.RosPack()
-            path = r.get_path('ur_icam_description')
-            self.scene.add_mesh(name, pose, path+'/models/cafe_table/meshes/cafe_table.dae')
-            return self.wait_for_state_update(name, box_is_known=True)
+        """
+
+        @param name:
+        @param size:
+        @param position:
+        @return:
+        """
+        # Create table obstacle
+        self.scene.remove_world_object(name)
+        pose = PoseStamped()
+        pose.header.frame_id = "world"
+        pose.pose.position.x = position[0]
+        pose.pose.position.y = position[1]
+        pose.pose.position.z = position[2]
+        r = rospkg.RosPack()
+        path = r.get_path('ur_icam_description')
+        self.scene.add_mesh(name, pose, path+'/models/cafe_table/meshes/cafe_table.dae')
+        return self.wait_for_state_update(name, box_is_known=True)
 
     def acceleration_factor(self, scaling_value):
+        """
+
+        @param scaling_value:
+        @return:
+        """
         return self.move_group.set_max_acceleration_scaling_factor(scaling_value)
 
     def velocity_factor(self, scaling_value):
+        """
+
+        @param scaling_value:
+        @return:
+        """
         return self.move_group.set_max_velocity_scaling_factor(scaling_value)
-
-
 
     def all_close(self, goal, actual, tolerance):
         """
@@ -149,6 +208,14 @@ class RobotUR(object):
             rospy.logerr("Incompatible types between goal and actual in 'RobotUR.allClose'")
 
     def wait_for_state_update(self, box_name, box_is_known=False, box_is_attached=False, timeout=4):
+        """
+
+        @param box_name:
+        @param box_is_known:
+        @param box_is_attached:
+        @param timeout:
+        @return:
+        """
         ## Ensuring Collision Updates Are Received
         ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         ## If the Python node dies before publishing a collision object update message, the message
@@ -177,43 +244,39 @@ class RobotUR(object):
         return False
 
     def open_gripper(self):
+        """
 
+        @return:
+        """
         tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        tcp_socket.connect((tcp_host_ip, tcp_port))
+        tcp_socket.connect((tcp_robot_ip, tcp_port))
         tcp_command = "set_digital_out(8,False)\n"
         tcp_socket.send(tcp_command)
         tcp_socket.close()
-
         time.sleep(0.5)
-
         play_service = rospy.ServiceProxy('/ur_hardware_interface/dashboard/play', Trigger)
         play = TriggerRequest()
         play_service(play)
-
         time.sleep(0.5)
-        print
-        "Fin open_gripper"
 
     def close_gripper(self):
+        """
 
+        @return:
+        """
         tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        tcp_socket.connect((tcp_host_ip, tcp_port))
+        tcp_socket.connect((tcp_robot_ip, tcp_port))
         tcp_command = "set_digital_out(8,True)\n"
         tcp_socket.send(tcp_command)
         tcp_socket.close()
-
         time.sleep(0.5)
-
         play_service = rospy.ServiceProxy('/ur_hardware_interface/dashboard/play', Trigger)
         play = TriggerRequest()
         play_service(play)
-
         time.sleep(0.5)
-        print
-        "Fin close_gripper"
 
 #
-#  Démo des différentes fonctions du robot
+#  Test the different RobotUR methods
 #
 if __name__ == '__main__':
     myRobot = RobotUR()
@@ -222,37 +285,39 @@ if __name__ == '__main__':
     # ^^^^^^^^^^^^^^^^^^^^^^^^^
     # We can get the name of the reference frame for this robot:
     planning_frame = myRobot.move_group.get_planning_frame()
-    print "============ Planning frame: %s" % planning_frame
+    print("============ Planning frame: %s" % planning_frame)
     # We can also print the name of the end-effector link for this group:
     eef_link = myRobot.move_group.get_end_effector_link()
-    print "============ End effector link: %s" % eef_link
+    print("============ End effector link: %s" % eef_link)
     # We can get a list of all the groups in the robot:
     group_names = myRobot.robot.get_group_names()
-    print "============ Available Planning Groups:", myRobot.robot.get_group_names()
-    # Sometimes for debugging it is useful to print the entire state of the
-    # robot:
-    print "============ Printing robot current pose"
-    print myRobot.get_current_pose()
-    print "============ Printing robot state"
-    print myRobot.robot.get_current_state()
-    print "============ Press `Enter` to execute a movement using a joint state goal ..."
+    print("============ Available Planning Groups:", myRobot.robot.get_group_names())
+    # Sometimes for debugging it is useful to print the entire state of the robot
+    print("============ Printing robot current pose")
+    print(myRobot.get_current_pose())
+    print("============ Printing robot state")
+    print(myRobot.robot.get_current_state())
+    print("============ Press `Enter` to execute a movement using a joint state goal ...")
     raw_input()
-    # On teste le positionnement par rapprot à des coordonnées angulaires
-    objectifAtteint = myRobot.go_to_joint_state(
-        [0, -pi / 4, 0, -pi / 2, 0, pi / 3])
-    if objectifAtteint:
-        print("L'objectif est atteint")
+    # Test of positioning with angular coordinates
+    targetReached = myRobot.go_to_joint_state([0, -pi / 4, 0, -pi / 2, 0, pi / 3])
+    if targetReached:
+        print("Target reached")
     else:
-        print("On n'est pas sur l'objectif")
-    # On teste le positionnement par rapport à des coordonnées cartésiennes
-    print("Test de go_to_pose_goal")
+        print("Target not reached")
+    print("Press ENTER to continue")
+    raw_input()
+    # Test of positioning with cartesian coordinates
+    print("go_to_pose_goal test")
     pose_goal = Pose()
     pose_goal.position.x = 0.4
     pose_goal.position.y = 0.1
     pose_goal.position.z = 0.4
     myRobot.go_to_pose_goal(pose_goal)
-    # On teste le déplacement en coord cartésiennes entre différents waypoints
-    print("Test de exec_cartesian_path")
+    print("Press ENTER to continue")
+    raw_input()
+    # Test of positioning with different cartesian waypoints
+    print("exec_cartesian_path test")
     waypoints = []
     wpose = myRobot.get_current_pose().pose
     wpose.position.z += 0.1  # First move up (z)
@@ -263,6 +328,8 @@ if __name__ == '__main__':
     wpose.position.y -= 0.1  # Third move sideways (y)
     waypoints.append(copy.deepcopy(wpose))
     myRobot.exec_cartesian_path(waypoints)
+    print("Press ENTER to continue")
+    raw_input()
     myRobot.open_gripper()
     myRobot.close_gripper()
     pose_goal = Pose()
@@ -270,5 +337,5 @@ if __name__ == '__main__':
     pose_goal.position.y = 0.1
     pose_goal.position.z = 0.4
     myRobot.go_to_pose_goal(pose_goal)
-    print("Fin")
+    print("The end")
 
