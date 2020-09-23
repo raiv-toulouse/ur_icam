@@ -281,6 +281,12 @@ class RobotUR(object):
 if __name__ == '__main__':
     myRobot = RobotUR()
     rospy.init_node('robotUR')
+    print("Press ENTER to continue")
+    raw_input()
+    myRobot.open_gripper()
+    print("Press ENTER to continue")
+    raw_input()
+    myRobot.close_gripper()
     # Getting Basic Information
     # ^^^^^^^^^^^^^^^^^^^^^^^^^
     # We can get the name of the reference frame for this robot:
@@ -330,8 +336,6 @@ if __name__ == '__main__':
     myRobot.exec_cartesian_path(waypoints)
     print("Press ENTER to continue")
     raw_input()
-    myRobot.open_gripper()
-    myRobot.close_gripper()
     pose_goal = Pose()
     pose_goal.position.x = 0.4
     pose_goal.position.y = 0.1
